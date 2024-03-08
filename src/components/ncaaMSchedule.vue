@@ -63,7 +63,15 @@
                   <router-link
                     :to="`/nfl/${competitor.team.id}`"
                     class="font-semibold ml-4"
-                    >{{ competitor.team.displayName }}
+                    ><span
+                      v-if="
+                        competitor.curatedRank &&
+                        competitor.curatedRank.current <= '25'
+                      "
+                      class="text-sm uppercase font-normal text-gray-500 mr-2 inline-block w-2"
+                      >{{ competitor.curatedRank?.current }}</span
+                    >
+                    {{ competitor.team.displayName }}
                   </router-link>
                 </div>
                 <div
@@ -112,7 +120,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const selectedTeamId = ref("1");
+const selectedTeamId = ref("183");
 const store = useNcaaMStore();
 
 const { schedules, error } = storeToRefs(store);
@@ -185,7 +193,7 @@ watch(selectedTeamId, async (newValue, oldValue) => {
 
 onMounted(async () => {
   await store.loadTeams();
-  if (store.teams.length > 0 && selectedTeamId.value === "1") {
+  if (store.teams.length > 0 && selectedTeamId.value === "183") {
     selectedTeamId.value = store.teams[0].value;
     await store.loadSchedule(selectedTeamId.value);
   }
