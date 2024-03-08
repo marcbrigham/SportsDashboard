@@ -131,9 +131,10 @@ const sortedTeams = computed(() => {
 
 const currentTeamRecord = computed(() => {
   const schedule = schedules.value[selectedTeamId.value];
-  return schedule
-    ? schedule.team.recordSummary
-    : { recordSummary: "No record available" };
+  return {
+    recordSummary: schedule?.team?.recordSummary || "No record available",
+    standingSummary: schedule?.team?.standingSummary || "No standing available",
+  };
 });
 
 const currentSchedule = computed(
