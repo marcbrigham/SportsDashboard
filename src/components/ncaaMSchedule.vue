@@ -14,8 +14,8 @@
       <h1 class="font-semibold text-2xl ml-2">{{ currentTeamName }}</h1>
     </div>
     <h3 class="text-gray-700 dark:text-gray-300 mb-2">
-      {{ schedules[selectedTeamId]?.team.recordSummary }} •
-      {{ schedules[selectedTeamId]?.team.standingSummary }}
+      {{ currentTeamRecord.recordSummary }} •
+      {{ currentTeamRecord.standingSummary }}
     </h3>
     <div
       class="mb-6 border border-gray-300 dark:border-gray-700 rounded-md focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -54,7 +54,7 @@
               >
                 <div class="flex">
                   <img
-                    :src="competitor.team.logos[0]?.href"
+                    :src="getTeamLogoHref(competitor)"
                     alt="Team Logo"
                     class="h-5 w-5"
                     width="20"
@@ -112,36 +112,63 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const selectedTeamId = ref("1"); // Initialize with an appropriate default value if necessary
+const selectedTeamId = ref("1");
 const store = useNcaaMStore();
 
-const currentTeam = computed(() => store.schedules[selectedTeamId.value]?.team);
+// Convert the store's state properties to reactive refs
+const { schedules, error } = storeToRefs(store);
+
+const currentTeam = computed(() => {
+  return store.teams.find((team) => team.value === selectedTeamId.value);
+});
 
 const currentTeamLogo = computed(() => currentTeam.value?.logo);
-const currentTeamName = computed(() => currentTeam.value?.displayName);
+const currentTeamName = computed(() => currentTeam.value?.name);
 
 const sortedTeams = computed(() => {
-  console.log(store.teams);
   return store.teams.slice().sort((a, b) => a.name.localeCompare(b.name));
 });
 
-const getScoreAndResult = (competition) => {
-  let selectedCompetitor = null;
-  let opponentCompetitor = null;
+const currentTeamRecord = computed(() => {
+  const schedule = schedules.value[selectedTeamId.value];
+  return schedule
+    ? schedule.team.recordSummary
+    : { recordSummary: "No record available" };
+});
 
-  for (const competitor of competition.competitors) {
-    if (competitor.team.id === selectedTeamId.value) {
-      selectedCompetitor = competitor;
-    } else {
-      opponentCompetitor = competitor;
-    }
+const currentSchedule = computed(
+  () => schedules[selectedTeamId.value]?.value || {}
+);
+
+const getScoreAndResult = (competition) => {
+  const defaultResult = {
+    scoreDisplay: "No data",
+    resultDisplay: "",
+    resultClass: "",
+  };
+
+  if (
+    !competition ||
+    !Array.isArray(competition.competitors) ||
+    competition.competitors.length === 0
+  ) {
+    return defaultResult;
   }
+
+  let selectedCompetitor = competition.competitors.find(
+    (c) => c.team.id === selectedTeamId.value
+  );
+  let opponentCompetitor = competition.competitors.find(
+    (c) => c.team.id !== selectedTeamId.value
+  );
 
   if (!selectedCompetitor || !opponentCompetitor) {
-    return { scoreDisplay: "Data missing", resultDisplay: "", resultClass: "" };
+    return defaultResult;
   }
-  console.log(selectedCompetitor.score);
-  const scoreDisplay = `${selectedCompetitor.score?.displayValue}-${opponentCompetitor.score?.displayValue}`;
+
+  const scoreDisplay = `${selectedCompetitor.score?.displayValue || "N/A"} - ${
+    opponentCompetitor.score?.displayValue || "N/A"
+  }`;
   const resultDisplay = selectedCompetitor.winner ? "W" : "L";
   const resultClass = selectedCompetitor.winner
     ? "text-green-700 dark:text-green-500"
@@ -150,21 +177,21 @@ const getScoreAndResult = (competition) => {
   return { scoreDisplay, resultDisplay, resultClass };
 };
 
+const getTeamLogoHref = (competitor) => {
+  return competitor?.team?.logos?.[0]?.href ?? "default_logo_url_here";
+};
+
 watch(selectedTeamId, async (newValue, oldValue) => {
   if (newValue && newValue !== oldValue) {
     await store.loadSchedule(newValue);
   }
 });
 
-// If you want to load a default team's schedule on mounted
 onMounted(async () => {
   await store.loadTeams();
-  if (store.teams.length > 0 && !selectedTeamId.value) {
-    // Set default selected team ID only if it hasn't been set already
-    selectedTeamId.value = store.teams[0].value; // Assuming the first team is a sensible default
+  if (store.teams.length > 0 && selectedTeamId.value === "1") {
+    selectedTeamId.value = store.teams[0].value;
     await store.loadSchedule(selectedTeamId.value);
   }
 });
-
-const { schedules, error } = storeToRefs(store);
 </script>

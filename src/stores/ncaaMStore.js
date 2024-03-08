@@ -2,13 +2,12 @@ import { defineStore } from "pinia";
 
 export const useNcaaMStore = defineStore("ncaamteam", {
   state: () => ({
-    schedules: {}, // Holds multiple team schedules
-    teams: [], // To store team details
+    schedules: {},
+    teams: [],
     error: null,
   }),
   actions: {
     async loadSchedule(teamId) {
-      // Your existing schedule loading logic remains unchanged
       if (this.schedules[teamId]) {
         return;
       }
@@ -30,36 +29,30 @@ export const useNcaaMStore = defineStore("ncaamteam", {
     async loadTeams() {
       try {
         this.error = null;
-        let fetchPromises = [];
+        let allTeams = [];
 
-        // Prepare fetch promises for all pages
         for (let page = 1; page <= 8; page++) {
-          fetchPromises.push(
-            fetch(
-              `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams?page=${page}`
-            )
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(`Failed to fetch teams on page ${page}`);
-                }
-                return response.json();
-              })
-              .then((data) => {
-                if (data && data.teams) {
-                  return data.teams.map((team) => ({
-                    value: team.id.toString(),
-                    name: team.displayName,
-                  }));
-                }
-                return [];
-              })
+          const response = await fetch(
+            `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams?page=${page}`
           );
-        }
+          if (!response.ok) {
+            throw new Error(`Failed to fetch teams on page ${page}`);
+          }
+          const data = await response.json();
+          const pageTeams = data.sports[0].leagues[0].teams.map((item) => ({
+            value: item.team.id.toString(),
+            name: item.team.displayName,
+            logo: item.team.logos[0]?.href ?? null,
+          }));
 
-        // Wait for all fetch promises to resolve
-        const pagesTeams = await Promise.all(fetchPromises);
-        // Flatten the array of arrays and update the state
-        this.teams = pagesTeams.flat();
+          console.log(data.sports[0].leagues[0].teams);
+          console.log(pageTeams);
+
+          allTeams = [...allTeams, ...pageTeams];
+        }
+        console.log("Final team count:", allTeams.length);
+
+        this.teams = allTeams;
       } catch (error) {
         console.error("Failed to load teams:", error);
         this.error = error;
