@@ -45,12 +45,8 @@ export const useNcaaMStore = defineStore("ncaamteam", {
             logo: item.team.logos[0]?.href ?? null,
           }));
 
-          console.log(data.sports[0].leagues[0].teams);
-          console.log(pageTeams);
-
           allTeams = [...allTeams, ...pageTeams];
         }
-        console.log("Final team count:", allTeams.length);
 
         this.teams = allTeams;
       } catch (error) {

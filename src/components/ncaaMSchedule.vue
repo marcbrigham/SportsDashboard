@@ -115,7 +115,6 @@ import {
 const selectedTeamId = ref("1");
 const store = useNcaaMStore();
 
-// Convert the store's state properties to reactive refs
 const { schedules, error } = storeToRefs(store);
 
 const currentTeam = computed(() => {
@@ -136,10 +135,6 @@ const currentTeamRecord = computed(() => {
     standingSummary: schedule?.team?.standingSummary || "No standing available",
   };
 });
-
-const currentSchedule = computed(
-  () => schedules[selectedTeamId.value]?.value || {}
-);
 
 const getScoreAndResult = (competition) => {
   const defaultResult = {
