@@ -5,9 +5,9 @@
     <Tabs default-value="nfl">
       <div class="p-4">
         <TabsList class="grid w-full grid-cols-3">
-          <TabsTrigger value="nfl">NFL</TabsTrigger>
-          <TabsTrigger value="ncaam">NCAA M</TabsTrigger>
-          <TabsTrigger value="nhl">NHL</TabsTrigger>
+          <TabsTrigger value="nfl">🏈 NFL</TabsTrigger>
+          <TabsTrigger value="ncaam">🏀 NCAA M</TabsTrigger>
+          <TabsTrigger value="nhl">🏒 NHL</TabsTrigger>
         </TabsList>
       </div>
       <main>
