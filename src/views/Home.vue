@@ -33,7 +33,25 @@
           </div>
         </TabsContent>
         <TabsContent value="ncaam">
-          <NcaaMSchedule />
+          <div class="grid md:grid-cols-2 lg:grid-cols-3">
+            <section
+              class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+            >
+              <NcaaMSchedule />
+            </section>
+            <section
+              class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+            >
+              <h2 class="font-semibold text-2xl">Scores</h2>
+              <p>Coming Soon</p>
+            </section>
+            <section
+              class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+            >
+              <h2 class="font-semibold text-2xl">Conference</h2>
+              <p>Coming Soon</p>
+            </section>
+          </div>
         </TabsContent>
         <TabsContent value="nhl">
           <div class="grid md:grid-cols-2 lg:grid-cols-3">
