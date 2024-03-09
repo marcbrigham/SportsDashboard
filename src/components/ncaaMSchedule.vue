@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, watch, computed, nextTick, inject } from "vue";
 import { useNcaaMStore } from "../stores/ncaaMStore";
 import { storeToRefs } from "pinia";
 import {
@@ -120,7 +120,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const selectedTeamId = ref("183");
+const selectedTeamId = inject("ncaamSelectedTeamId");
 const store = useNcaaMStore();
 
 const { schedules, error } = storeToRefs(store);
@@ -185,17 +185,26 @@ const getTeamLogoHref = (competitor) => {
   return competitor?.team?.logos?.[0]?.href ?? "default_logo_url_here";
 };
 
-watch(selectedTeamId, async (newValue, oldValue) => {
-  if (newValue && newValue !== oldValue) {
-    await store.loadSchedule(newValue);
-  }
-});
+watch(
+  selectedTeamId,
+  async (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+      await store.loadSchedule(newValue);
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
   await store.loadTeams();
-  if (store.teams.length > 0 && selectedTeamId.value === "183") {
-    selectedTeamId.value = store.teams[0].value;
+  await nextTick(); // Ensure DOM updates and reactivity have been processed
+
+  // Only load the schedule for the initially set team ID if it exists in the teams array
+  if (store.teams.some((team) => team.value === selectedTeamId.value)) {
     await store.loadSchedule(selectedTeamId.value);
+  } else if (store.teams.length > 0) {
+    // Fallback: Set to the first team's value if the desired initial team ID is not found
+    selectedTeamId.value = store.teams[0].value;
   }
 });
 </script>

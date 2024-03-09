@@ -113,7 +113,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, watch, computed, inject } from "vue";
 import { useNhlStore } from "../stores/nhlStore";
 import { storeToRefs } from "pinia";
 import {
@@ -125,7 +125,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const selectedTeamId = ref("1"); // Initialize with an appropriate default value if necessary
+const selectedTeamId = inject("nhlSelectedTeamId"); // Initialize with an appropriate default value if necessary
 const store = useNhlStore();
 
 const sortedTeams = computed(() => {

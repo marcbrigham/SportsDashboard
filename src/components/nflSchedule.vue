@@ -106,7 +106,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, watch, computed, inject } from "vue";
 import { useNflStore } from "../stores/nflStore";
 import { storeToRefs } from "pinia";
 import {
@@ -119,7 +119,7 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const selectedTeamId = ref("1"); // Initialize with an appropriate default value if necessary
+const selectedTeamId = inject("nflSelectedTeamId"); // Initialize with an appropriate default value if necessary
 const store = useNflStore();
 
 const sortedTeams = computed(() => {
