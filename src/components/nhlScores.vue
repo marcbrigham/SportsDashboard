@@ -11,7 +11,7 @@
             <p
               class="flex justify-end mr-4 mt-4 text-sm text-gray-600 dark:text-gray-400"
             >
-              Final
+              {{ event.status.type.detail }}
             </p>
             <a href="/nhl/252">
               <div class="flex flex-row justify-between px-4 py-2 h-[60px]">
@@ -21,14 +21,16 @@
                     width="24"
                     height="24"
                     class="h-6 w-6 mt-[2px]"
-                    :src="competition.competitors[0].team.logo"
+                    :src="competition.competitors[1].team.logo"
                   />
                   <div class="flex flex-col ml-4 leading-4 gap-y-1">
                     <p
-                      class="font-semibold text-gray-600 dark:text-gray-400"
+                      class="font-semibold"
                       :class="[
-                        competition.competitors[0].score >
-                        competition.competitors[1].score
+                        competition.competitors[1].score >
+                          competition.competitors[0].score ||
+                        competition.competitors[1].score ===
+                          competition.competitors[0].score
                           ? 'text-black dark:text-white'
                           : 'text-gray-600 dark:text-gray-400',
                       ]"
@@ -39,11 +41,11 @@
                       class="text-sm text-gray-500"
                       :class="{
                         'text-gray-600 dark:text-gray-400':
-                          competition.competitors[0].score >
-                          competition.competitors[1].score,
+                          competition.competitors[1].score >
+                          competition.competitors[0].score,
                       }"
                     >
-                      {{ competition.competitors[0].records[0].summary }}
+                      {{ competition.competitors[1].records[0].summary }}
                     </p>
                   </div>
                 </div>
@@ -51,12 +53,14 @@
                   class="flex text-gray-500"
                   :class="{
                     'text-gray-900 dark:text-gray-100':
-                      competition.competitors[0].score >
-                      competition.competitors[1].score,
+                      competition.competitors[1].score >
+                        competition.competitors[0].score ||
+                      competition.competitors[1].score ===
+                        competition.competitors[0].score,
                   }"
                 >
                   <p class="leading-normal font-semibold text-xl">
-                    {{ competition.competitors[0].score }}
+                    {{ competition.competitors[1].score }}
                   </p>
                 </div>
               </div></a
@@ -72,28 +76,28 @@
                     data-nimg="1"
                     class="h-6 w-6 mt-[2px]"
                     style="color: transparent"
-                    :src="competition.competitors[1].team.logo"
+                    :src="competition.competitors[0].team.logo"
                   />
                   <div class="flex flex-col ml-4 leading-4 gap-y-1">
                     <p
                       :class="{
                         'text-gray-500':
-                          competition.competitors[1].score <
-                          competition.competitors[0].score,
+                          competition.competitors[0].score <
+                          competition.competitors[1].score,
                       }"
                       class="font-semibold"
                     >
-                      {{ competition.competitors[1].team.displayName }}
+                      {{ competition.competitors[0].team.displayName }}
                     </p>
                     <p
                       class="text-sm text-gray-600 dark:text-gray-400"
                       :class="{
                         'text-gray-500':
-                          competition.competitors[1].score <
-                          competition.competitors[0].score,
+                          competition.competitors[0].score <
+                          competition.competitors[1].score,
                       }"
                     >
-                      {{ competition.competitors[1].records[0].summary }}
+                      {{ competition.competitors[0].records[0].summary }}
                     </p>
                   </div>
                 </div>
@@ -101,12 +105,12 @@
                   class="flex"
                   :class="{
                     'text-gray-500':
-                      competition.competitors[1].score <
-                      competition.competitors[0].score,
+                      competition.competitors[0].score <
+                      competition.competitors[1].score,
                   }"
                 >
                   <p class="leading-normal font-semibold text-xl">
-                    {{ competition.competitors[1].score }}
+                    {{ competition.competitors[0].score }}
                   </p>
                 </div>
               </div></a
