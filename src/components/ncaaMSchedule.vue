@@ -75,6 +75,7 @@
                   </router-link>
                 </div>
                 <div
+                  v-if="resultIsValid(getScoreAndResult(competition))"
                   class="flex flex-row-reverse justify-end min-[450px]:flex-row"
                 >
                   <p class="text-gray-700 dark:text-gray-300">
@@ -95,6 +96,14 @@
                     ]"
                   >
                     {{ getScoreAndResult(competition).resultDisplay }}
+                  </p>
+                </div>
+                <div
+                  v-if="!resultIsValid(getScoreAndResult(competition))"
+                  class="flex flex-row-reverse justify-end min-[450px]:flex-row"
+                >
+                  <p class="text-gray-700 dark:text-gray-300">
+                    {{ formatDate(competition.date) }}
                   </p>
                 </div>
               </div>
@@ -183,6 +192,40 @@ const getScoreAndResult = (competition) => {
 
 const getTeamLogoHref = (competitor) => {
   return competitor?.team?.logos?.[0]?.href ?? "default_logo_url_here";
+};
+
+const resultIsValid = (result) => {
+  return (
+    result && result.scoreDisplay && !result.scoreDisplay.includes("undefined")
+  );
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+
+  // Convert UTC date to Eastern Time, considering an offset of -5 hours (EST)
+  // Note: This does not account for daylight saving time (EDT)
+  const offset = date.getTimezoneOffset() !== 300 ? -4 : -5; // Basic DST handling for EST/EDT
+  date.setHours(date.getUTCHours() + offset);
+
+  // Format the date parts
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Format hours and minutes to ensure two digits
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const amPm = hours >= 12 ? "PM" : "AM";
+
+  // Manually construct the date string
+  const dateStringConstruct = `${month}/${day} - ${formattedHours}:${formattedMinutes} ${amPm}`;
+
+  // Determine if it's EST or EDT, though this basic check may not be accurate for all edge cases
+  const timeZoneSuffix = date.getTimezoneOffset() === 300 ? "EST" : "EDT";
+
+  return `${dateStringConstruct} ${timeZoneSuffix}`;
 };
 
 watch(
