@@ -4,6 +4,7 @@ export const useNhlStore = defineStore("nhlteam", {
   state: () => ({
     schedules: {}, // Holds multiple team schedules
     teams: [], // To store team details
+    scores: {},
     error: null,
   }),
   actions: {
@@ -58,6 +59,22 @@ export const useNhlStore = defineStore("nhlteam", {
         }
       } catch (error) {
         console.error("Failed to load teams:", error);
+        this.error = error;
+      }
+    },
+    async loadScores() {
+      try {
+        this.error = null;
+        const response = await fetch(
+          "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch scores");
+        }
+        const data = await response.json();
+        this.scores = data;
+      } catch (error) {
+        console.error("Failed to load scores:", error);
         this.error = error;
       }
     },

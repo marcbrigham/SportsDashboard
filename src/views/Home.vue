@@ -69,6 +69,21 @@
                 class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
               >
                 <h2 class="font-semibold text-2xl">Scores</h2>
+                <NhlScores />
+              </section>
+              <section
+                class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+              >
+                <h2 class="font-semibold text-2xl">Conference</h2>
+                <p>Coming Soon</p>
+              </section>
+            </div>
+          </TabsContent>
+        </keep-alive>
+              <section
+                class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+              >
+                <h2 class="font-semibold text-2xl">Scores</h2>
                 <p>Coming Soon</p>
               </section>
               <section
@@ -89,6 +104,7 @@
 import { provide, ref } from "vue";
 import NflSchedule from "../components/nflSchedule.vue";
 import NhlSchedule from "../components/nhlSchedule.vue";
+import NhlScores from "../components/nhlScores.vue";
 import NcaaMSchedule from "../components/ncaaMSchedule.vue";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
