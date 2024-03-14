@@ -1,115 +1,117 @@
 <template>
   <div class="max-w[800]">
     <div v-if="error">Error: {{ error.message }}</div>
-    <div v-else class="pb-2 border-b border-gray-200 dark:border-gray-800">
+    <div v-else>
       <template v-for="event in scores?.events" :key="event.id">
         <template
           v-for="competition in event.competitions"
           :key="competition.id"
         >
-          <p
-            class="flex justify-end mr-4 mt-4 text-sm text-gray-600 dark:text-gray-400"
-          >
-            Final
-          </p>
-          <a href="/nhl/252">
-            <div class="flex flex-row justify-between px-4 py-2 h-[60px]">
-              <div class="flex">
-                <img
-                  alt="BYU Cougars"
-                  width="24"
-                  height="24"
-                  class="h-6 w-6 mt-[2px]"
-                  :src="competition.competitors[0].team.logo"
-                />
-                <div class="flex flex-col ml-4 leading-4 gap-y-1">
-                  <p
-                    class="font-semibold text-gray-600 dark:text-gray-400"
-                    :class="[
-                      competition.competitors[0].score >
-                      competition.competitors[1].score
-                        ? 'text-black dark:text-white'
-                        : 'text-gray-600 dark:text-gray-400',
-                    ]"
-                  >
-                    {{ competition.competitors[0].team.displayName }}
-                  </p>
-                  <p
-                    class="text-sm text-gray-500"
-                    :class="{
-                      'text-gray-600 dark:text-gray-400':
+          <div class="pb-2 border-b border-gray-200 dark:border-gray-800">
+            <p
+              class="flex justify-end mr-4 mt-4 text-sm text-gray-600 dark:text-gray-400"
+            >
+              Final
+            </p>
+            <a href="/nhl/252">
+              <div class="flex flex-row justify-between px-4 py-2 h-[60px]">
+                <div class="flex">
+                  <img
+                    alt="BYU Cougars"
+                    width="24"
+                    height="24"
+                    class="h-6 w-6 mt-[2px]"
+                    :src="competition.competitors[0].team.logo"
+                  />
+                  <div class="flex flex-col ml-4 leading-4 gap-y-1">
+                    <p
+                      class="font-semibold text-gray-600 dark:text-gray-400"
+                      :class="[
                         competition.competitors[0].score >
-                        competition.competitors[1].score,
-                    }"
-                  >
-                    {{ competition.competitors[0].records[0].summary }}
+                        competition.competitors[1].score
+                          ? 'text-black dark:text-white'
+                          : 'text-gray-600 dark:text-gray-400',
+                      ]"
+                    >
+                      {{ competition.competitors[0].team.displayName }}
+                    </p>
+                    <p
+                      class="text-sm text-gray-500"
+                      :class="{
+                        'text-gray-600 dark:text-gray-400':
+                          competition.competitors[0].score >
+                          competition.competitors[1].score,
+                      }"
+                    >
+                      {{ competition.competitors[0].records[0].summary }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex text-gray-500"
+                  :class="{
+                    'text-gray-900 dark:text-gray-100':
+                      competition.competitors[0].score >
+                      competition.competitors[1].score,
+                  }"
+                >
+                  <p class="leading-normal font-semibold text-xl">
+                    {{ competition.competitors[0].score }}
                   </p>
                 </div>
-              </div>
-              <div
-                class="flex text-gray-500"
-                :class="{
-                  'text-gray-900 dark:text-gray-100':
-                    competition.competitors[0].score >
-                    competition.competitors[1].score,
-                }"
-              >
-                <p class="leading-normal font-semibold text-xl">
-                  {{ competition.competitors[0].score }}
-                </p>
-              </div>
-            </div></a
-          ><a href="/2116"
-            ><div class="flex flex-row justify-between px-4 py-2 h-[60px]">
-              <div class="flex">
-                <img
-                  alt="UCF Knights"
-                  fetchpriority="high"
-                  width="24"
-                  height="24"
-                  decoding="async"
-                  data-nimg="1"
-                  class="h-6 w-6 mt-[2px]"
-                  style="color: transparent"
-                  :src="competition.competitors[1].team.logo"
-                />
-                <div class="flex flex-col ml-4 leading-4 gap-y-1">
-                  <p
-                    :class="{
-                      'text-gray-500':
-                        competition.competitors[1].score <
-                        competition.competitors[0].score,
-                    }"
-                    class="font-semibold"
-                  >
-                    {{ competition.competitors[1].team.displayName }}
-                  </p>
-                  <p
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                    :class="{
-                      'text-gray-500':
-                        competition.competitors[1].score <
-                        competition.competitors[0].score,
-                    }"
-                  >
-                    {{ competition.competitors[1].records[0].summary }}
+              </div></a
+            ><a href="/2116"
+              ><div class="flex flex-row justify-between px-4 py-2 h-[60px]">
+                <div class="flex">
+                  <img
+                    alt="UCF Knights"
+                    fetchpriority="high"
+                    width="24"
+                    height="24"
+                    decoding="async"
+                    data-nimg="1"
+                    class="h-6 w-6 mt-[2px]"
+                    style="color: transparent"
+                    :src="competition.competitors[1].team.logo"
+                  />
+                  <div class="flex flex-col ml-4 leading-4 gap-y-1">
+                    <p
+                      :class="{
+                        'text-gray-500':
+                          competition.competitors[1].score <
+                          competition.competitors[0].score,
+                      }"
+                      class="font-semibold"
+                    >
+                      {{ competition.competitors[1].team.displayName }}
+                    </p>
+                    <p
+                      class="text-sm text-gray-600 dark:text-gray-400"
+                      :class="{
+                        'text-gray-500':
+                          competition.competitors[1].score <
+                          competition.competitors[0].score,
+                      }"
+                    >
+                      {{ competition.competitors[1].records[0].summary }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex"
+                  :class="{
+                    'text-gray-500':
+                      competition.competitors[1].score <
+                      competition.competitors[0].score,
+                  }"
+                >
+                  <p class="leading-normal font-semibold text-xl">
+                    {{ competition.competitors[1].score }}
                   </p>
                 </div>
-              </div>
-              <div
-                class="flex"
-                :class="{
-                  'text-gray-500':
-                    competition.competitors[1].score <
-                    competition.competitors[0].score,
-                }"
-              >
-                <p class="leading-normal font-semibold text-xl">
-                  {{ competition.competitors[1].score }}
-                </p>
-              </div>
-            </div></a
-          >
+              </div></a
+            >
+          </div>
         </template>
       </template>
     </div>
