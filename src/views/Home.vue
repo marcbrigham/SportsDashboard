@@ -4,10 +4,11 @@
   >
     <Tabs default-value="nfl">
       <div class="p-4">
-        <TabsList class="grid w-full grid-cols-3">
+        <TabsList class="grid w-full grid-cols-4">
           <TabsTrigger value="nfl">🏈 NFL</TabsTrigger>
           <TabsTrigger value="ncaam">🏀 NCAA M</TabsTrigger>
           <TabsTrigger value="nhl">🏒 NHL</TabsTrigger>
+          <TabsTrigger value="mma">👊 MMA</TabsTrigger>
         </TabsList>
       </div>
       <main>
@@ -80,6 +81,14 @@
             </div>
           </TabsContent>
         </keep-alive>
+        <keep-alive>
+          <TabsContent value="mma">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3">
+              <section
+                class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
+              >
+                <MmaSchedule />
+              </section>
               <section
                 class="w-full mx-auto p-6 border-r border-gray-200 dark:border-gray-800"
               >
@@ -106,6 +115,7 @@ import NflSchedule from "../components/nflSchedule.vue";
 import NhlSchedule from "../components/nhlSchedule.vue";
 import NhlScores from "../components/nhlScores.vue";
 import NcaaMSchedule from "../components/ncaaMSchedule.vue";
+import MmaSchedule from "../components/mmaSchedule.vue";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const nflSelectedTeamId = ref("1");
