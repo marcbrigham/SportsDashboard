@@ -90,26 +90,29 @@
                       {{ competition.competitors[0].team.displayName }}
                     </p>
                     <p
-                      class="text-sm text-gray-600 dark:text-gray-400"
-                      :class="{
-                        'text-gray-500':
-                          competition.competitors[0].score <
-                          competition.competitors[1].score,
-                      }"
+                      class="text-sm"
+                      :class="[
+                        competition.competitors[0].score >
+                          competition.competitors[1].score ||
+                        competition.competitors[0].score ===
+                          competition.competitors[1].score
+                          ? 'text-gray-600 dark:text-gray-400'
+                          : 'text-gray-500',
+                      ]"
                     >
                       {{ competition.competitors[0].records[0].summary }}
                     </p>
                   </div>
                 </div>
-                <div
-                  class="flex"
-                  :class="{
-                    'text-gray-500':
-                      competition.competitors[0].score <
-                      competition.competitors[1].score,
-                  }"
-                >
-                  <p class="leading-normal font-semibold text-xl">
+                <div class="flex">
+                  <p
+                    class="leading-normal font-semibold text-xl"
+                    :class="{
+                      'text-gray-500':
+                        competition.competitors[0].score <
+                        competition.competitors[1].score,
+                    }"
+                  >
                     {{ competition.competitors[0].score }}
                   </p>
                 </div>
