@@ -35,7 +35,7 @@
                           : 'text-gray-600 dark:text-gray-400',
                       ]"
                     >
-                      {{ competition.competitors[0].team.displayName }}
+                      {{ competition.competitors[1].team.displayName }}
                     </p>
                     <p
                       class="text-sm text-gray-500"
