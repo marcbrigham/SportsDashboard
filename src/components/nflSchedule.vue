@@ -141,7 +141,7 @@ const getScoreAndResult = (competition) => {
   if (!selectedCompetitor || !opponentCompetitor) {
     return { scoreDisplay: "Data missing", resultDisplay: "", resultClass: "" };
   }
-  const scoreDisplay = `${selectedCompetitor.score.displayValue}-${opponentCompetitor.score.displayValue}`;
+  const scoreDisplay = `${selectedCompetitor.score?.displayValue}-${opponentCompetitor.score?.displayValue}`;
   const resultDisplay = selectedCompetitor.winner ? "W" : "L";
   const resultClass = selectedCompetitor.winner
     ? "text-green-700 dark:text-green-500"
